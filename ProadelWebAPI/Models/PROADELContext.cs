@@ -16,8 +16,7 @@ namespace ProadelWebAPI.Models
         {
         }
 
-        public virtual DbSet<CatalogoClientesV> CatalogoClientesVs { get; set; } = null!;
-        public virtual DbSet<ImporteFacturacionClientesV> ImporteFacturacionClientesVs { get; set; } = null!;
+        public virtual DbSet<CatalogoClientesDatum> CatalogoClientesData { get; set; } = null!;
         public virtual DbSet<LoginAccessDatum> LoginAccessData { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -25,60 +24,29 @@ namespace ProadelWebAPI.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=localhost;Database=PROADEL;Trusted_Connection=True; ");
+                optionsBuilder.UseSqlServer("Server=localhost;Database=PROADEL;Trusted_Connection=True;");
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<CatalogoClientesV>(entity =>
+            modelBuilder.Entity<CatalogoClientesDatum>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(e => e.Codigo);
 
-                entity.ToView("CATALOGO_CLIENTES_V", "proadel");
+                entity.ToTable("CATALOGO_CLIENTES_DATA", "proadel");
 
-                entity.Property(e => e.Abono)
+                entity.Property(e => e.Codigo).HasMaxLength(10);
+
+                entity.Property(e => e.Direccion).HasMaxLength(50);
+
+                entity.Property(e => e.LimiteDeCredito)
                     .HasColumnType("decimal(18, 2)")
-                    .HasColumnName("ABONO");
+                    .HasColumnName("Limite de credito");
 
-                entity.Property(e => e.Codigo)
-                    .HasMaxLength(50)
-                    .HasColumnName("CODIGO");
+                entity.Property(e => e.Nombre).HasMaxLength(50);
 
-                entity.Property(e => e.Direccion)
-                    .HasMaxLength(225)
-                    .HasColumnName("DIRECCION");
-
-                entity.Property(e => e.Importe)
-                    .HasColumnType("decimal(18, 2)")
-                    .HasColumnName("IMPORTE");
-
-                entity.Property(e => e.Nombre)
-                    .HasMaxLength(225)
-                    .HasColumnName("NOMBRE");
-
-                entity.Property(e => e.SaldoTotal)
-                    .HasColumnType("decimal(18, 2)")
-                    .HasColumnName("SALDO_TOTAL");
-
-                entity.Property(e => e.Telefono)
-                    .HasMaxLength(50)
-                    .HasColumnName("TELEFONO");
-            });
-
-            modelBuilder.Entity<ImporteFacturacionClientesV>(entity =>
-            {
-                entity.HasNoKey();
-
-                entity.ToView("IMPORTE_FACTURACION_CLIENTES_V", "proadel");
-
-                entity.Property(e => e.Cliente)
-                    .HasMaxLength(50)
-                    .HasColumnName("CLIENTE");
-
-                entity.Property(e => e.Total)
-                    .HasColumnType("decimal(38, 2)")
-                    .HasColumnName("TOTAL");
+                entity.Property(e => e.Telefono).HasMaxLength(50);
             });
 
             modelBuilder.Entity<LoginAccessDatum>(entity =>

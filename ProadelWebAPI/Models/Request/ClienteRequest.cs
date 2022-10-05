@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace ProadelWebAPI.Models
+﻿namespace ProadelWebAPI.Models.Request
 {
-    public partial class CatalogoClientesDatum
+    public class ClienteRequest
     {
         public string Codigo { get; set; } = null!;
         public string Nombre { get; set; } = null!;
