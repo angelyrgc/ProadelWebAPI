@@ -71,10 +71,6 @@ namespace ProadelWebAPI.Controllers
 
         public IActionResult Modify(ClienteRequest clientRequest)
         {
-            Response response = new Response();
-
-            try
-            {
                 using (PROADELContext db = new PROADELContext())
                 {
                     CatalogoClientesDatum clienteModify = db.CatalogoClientesData.Find(clientRequest.Codigo);
@@ -94,7 +90,6 @@ namespace ProadelWebAPI.Controllers
 
 
             }
-            catch (Exception ex)
             {
                 response.Mensaje = ex.Message;
             }
